@@ -25,8 +25,10 @@
 using namespace std;
 
 #define ALARM_FILE		"alarm_movie_padded.raw"
-#define RECORD_HW		"plughw:0,0"
-#define PLAYBACK_HW		"plughw:1,0"
+//#define RECORD_HW		"plughw:0,0"
+//#define PLAYBACK_HW		"plughw:1,0"
+#define RECORD_HW		"plughw:1,0"
+#define PLAYBACK_HW		"plughw:0,1"
 #define KEYWORD_FILE	"keywords.txt"
 #define PRINTER_PORT	"/dev/ttyAMA0"
 #define QUIET_PIN		0
@@ -65,10 +67,12 @@ int main(int argc, char* argv[]) {
 		digitalWrite(LED_PIN, LOW);
 
 		// Initialize printer.
+		cout << "Initialize printer." << endl;
 		Adafruit_Thermal printer(PRINTER_PORT);
 		printer.begin();
 
 		// Load alarm raw audio.
+		cout << "Load alarm raw audio." << endl;
 		ifstream input(ALARM_FILE, ios::in | ios::binary);
 		input.seekg (0, input.end);
 		size_t length = input.tellg();
@@ -77,23 +81,26 @@ int main(int argc, char* argv[]) {
 		input.read((char*)alarm.data(), length);
 
 		// Initialize audio sink and source.
+		cout << "Initialize audio sink and source." << endl;
 		AlsaSink sink;
 		sink.open(PLAYBACK_HW, 44100, 1, SND_PCM_FORMAT_S16_LE);
 		AlsaSource source;
 		source.open(RECORD_HW, 16000, 1, SND_PCM_FORMAT_S16_LE);
 
 		// Initialize keyword spotter.
+		cout << "Initialize keyword spotter." << endl;
 		PocketSphinxKWS spotter;
 		spotter.initialize(PocketSphinxKWS::parseConfig(argc, argv), KEYWORD_FILE);
 
 		// Initialize main logic.
+		cout << "Initialize main logic." << endl;
 		DemoManMonitor monitor(8000, &printer, &source, &sink, &spotter, &alarm, light);
 		setQuietMode(monitor, quietSwitch);
 
 		cout << "Listening... (press Ctrl-C to stop)" << endl;
 
 		while (shouldRun) {
-			// Check quite mode switch and update state.
+			// Check quiet mode switch and update state.
 			bool newQuietSwitch = (digitalRead(QUIET_PIN) == HIGH);
 			if (newQuietSwitch != quietSwitch) {
 				quietSwitch = newQuietSwitch;
@@ -103,6 +110,7 @@ int main(int argc, char* argv[]) {
 			monitor.update();
 		}
 
+		cout << "Terminating..." << endl;
 		digitalWrite(LED_PIN, LOW);
 	}
 	catch (AlsaError ex) {
