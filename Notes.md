@@ -82,4 +82,21 @@ values. I just used trial and errors.
 
 #### std::exception
 
-This can be wrong path to the models. See comment futher up.
+This can be wrong path to the models. See comment further up.
+
+#### No Audio via Jack
+
+https://jeffskinnerbox.wordpress.com/2012/11/15/getting-audio-out-working-on-the-raspberry-pi/
+
+By default, the RPi audio output is set to automatically select the digital HDMI interface if its being used, otherwise the analog audio output. You can force it to use a specific interface via the sound mixer controls.  amixer allows command-line control of the mixer for the ALSA driver.
+
+You can force the RPi to use a specific interface using the command amixer cset numid=3 N where the N parameter means the following: 0=auto, 1=analog, 2=hdmi.  Therefore, to force the Raspberry Pi to use the analog output:
+
+	amixer cset numid=3 1
+
+---
+
+http://www.g7smy.co.uk/2013/08/recording-sound-on-the-raspberry-pi/
+
+	$ alsamixer
+	$ sudo alsactl store 1
