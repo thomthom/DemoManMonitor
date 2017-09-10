@@ -77,6 +77,8 @@ On my system I had to change `RECORD_HW` to `"plughw:1,0"` and
 `PLAYBACK_HW` to `"plughw:0,1"`. Not sure how to determine correct
 values. I just used trial and errors.
 
+    cat /proc/asound/cards
+
 
 #### std::exception
 
