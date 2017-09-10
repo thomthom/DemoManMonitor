@@ -68,7 +68,7 @@ https://github.com/cmusphinx/pocketsphinx/commit/f7bc9e7cc715712fe4b8f8010961b96
 
 ### ALSA Errors
 
-#### snd_pcm_open
+#### `snd_pcm_open`
 
 `ALSA ERROR No such file or directory (-2)` can be a result of device
 configuration not matching the system.
@@ -88,15 +88,51 @@ This can be wrong path to the models. See comment further up.
 
 https://jeffskinnerbox.wordpress.com/2012/11/15/getting-audio-out-working-on-the-raspberry-pi/
 
-By default, the RPi audio output is set to automatically select the digital HDMI interface if its being used, otherwise the analog audio output. You can force it to use a specific interface via the sound mixer controls.  amixer allows command-line control of the mixer for the ALSA driver.
+By default, the RPi audio output is set to automatically select the digital HDMI
+interface if its being used, otherwise the analog audio output. You can force it
+to use a specific interface via the sound mixer controls.  amixer allows
+command-line control of the mixer for the ALSA driver.
 
-You can force the RPi to use a specific interface using the command amixer cset numid=3 N where the N parameter means the following: 0=auto, 1=analog, 2=hdmi.  Therefore, to force the Raspberry Pi to use the analog output:
+You can force the RPi to use a specific interface using the command
+`amixer cset numid=3` N where the N parameter means the following:
+0=auto,
+1=analog,
+2=hdmi.
+Therefore, to force the Raspberry Pi to use the analog output:
 
 	amixer cset numid=3 1
 
----
+--------------------------------------------------------------------------------
 
 http://www.g7smy.co.uk/2013/08/recording-sound-on-the-raspberry-pi/
 
 	$ alsamixer
 	$ sudo alsactl store 1
+
+
+	arecord -D plughw:1 -f cd -vv ~/rectest.wav
+
+	aplay ~/rectest.wav
+
+
+
+#### Audio Jack Playback Noise
+
+https://github.com/superjamie/lazyweb/wiki/Raspberry-Pi-3.5mm-Audio-Hiss
+
+When using a Raspberry Pi 2 and or Raspberry Pi 3, the 3.5mm audio connector
+next to the HDMI port produces a noticeable static "hiss" when configured to
+output sound.
+
+As of Feb 2016 there is a different audio method in the Pi firmware, set
+`audio_pwm_mode=2` in /boot/config.txt to use it. This works for me.
+
+
+#### Playstation Eye Microphone
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=181578
+
+Thanks for that update about the newer kernel; great news! Note, as far as I
+know, alsamixer has never worked with the PS3 Eye. Even on the earlier systems
+where arecord works, alsamixer fails with the same error message. I assume it is
+not compatible with input devices having more than 2 channels? 
