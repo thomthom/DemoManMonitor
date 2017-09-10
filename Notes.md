@@ -136,3 +136,9 @@ Thanks for that update about the newer kernel; great news! Note, as far as I
 know, alsamixer has never worked with the PS3 Eye. Even on the earlier systems
 where arecord works, alsamixer fails with the same error message. I assume it is
 not compatible with input devices having more than 2 channels? 
+
+#### Buffer Underrun while Recording
+
+> Failed to get a full buffer of microphone data!
+
+Getting this a lot. Haven't been able to figure out why or how to combat.
