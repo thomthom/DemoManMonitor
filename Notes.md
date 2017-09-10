@@ -39,6 +39,17 @@ In the `Makefile` the `run` command also needs to be updated to reflect
 the model filenames.
 
 
+#### Other References
+
+* https://wolfpaulus.com/embedded/raspberrypi2-sr/
+* https://raspberrypi.stackexchange.com/questions/56773/using-pocketsphinx-for-voice-control-applications
+* https://cmusphinx.github.io/wiki/tutoriallm/#keyword_lists
+* https://github.com/cmusphinx/pocketsphinx-python
+* https://github.com/bambocher/pocketsphinx-python
+* https://cmusphinx.github.io/wiki/tutorialam/
+* https://cmusphinx.github.io/wiki/tutorialadapt/
+
+
 ### wiringPi
 
 This appear to be out of the box with RPi3, (August 2017). `gpio` is available.
