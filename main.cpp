@@ -32,7 +32,7 @@ using namespace std;
 //#define RECORD_HW	      "plughw:0,0"
 //#define PLAYBACK_HW     "plughw:1,0"
 #define RECORD_HW     "plughw:0,0"
-#define PLAYBACK_HW   "plughw:1,0"
+#define PLAYBACK_HW   "plughw:0,1"
 #define KEYWORD_FILE	"keywords.txt"
 #define PRINTER_PORT	"/dev/ttyAMA0"
 #define QUIET_PIN		0
