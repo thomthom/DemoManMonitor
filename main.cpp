@@ -14,7 +14,9 @@
 #include <memory>
 #include <vector>
 
+#if USE_WIRING
 #include <wiringPi.h>
+#endif
 
 #include "Adafruit_Thermal.h"
 #include "AlsaError.h"
@@ -29,8 +31,8 @@ using namespace std;
 #define ALARM_FILE		"alarm_movie_padded.raw"
 //#define RECORD_HW	      "plughw:0,0"
 //#define PLAYBACK_HW     "plughw:1,0"
-#define RECORD_HW		"plughw:1,0"
-#define PLAYBACK_HW		"plughw:0,1"
+#define RECORD_HW     "plughw:0,0"
+#define PLAYBACK_HW   "plughw:1,0"
 #define KEYWORD_FILE	"keywords.txt"
 #define PRINTER_PORT	"/dev/ttyAMA0"
 #define QUIET_PIN		0
@@ -49,7 +51,9 @@ void setQuietMode(DemoManMonitor& monitor, bool quietMode) {
 }
 
 void light(bool enable) {
+#if USE_WIRING
 	digitalWrite(LED_PIN, enable ? HIGH : LOW);
+#endif
 }
 
 int main(int argc, char* argv[]) {
@@ -61,12 +65,16 @@ int main(int argc, char* argv[]) {
 		signal(SIGINT, [](int param){ shouldRun = false; });
 
 		// Initialize wiringPi library and quiet switch input.
+#if USE_WIRING
 		wiringPiSetup () ;
 		pinMode(QUIET_PIN, INPUT);
 		bool quietSwitch = (digitalRead(QUIET_PIN) == HIGH);
 
 		pinMode(LED_PIN, OUTPUT);
 		digitalWrite(LED_PIN, LOW);
+#else
+		bool quietSwitch = false;
+#endif
 
 		// Initialize printer.
 #if USE_PRINTER
@@ -110,7 +118,11 @@ int main(int argc, char* argv[]) {
 
 		while (shouldRun) {
 			// Check quiet mode switch and update state.
+#if USE_WIRING
 			bool newQuietSwitch = (digitalRead(QUIET_PIN) == HIGH);
+#else
+			bool newQuietSwitch = false;
+#endif
 			if (newQuietSwitch != quietSwitch) {
 				quietSwitch = newQuietSwitch;
 				setQuietMode(monitor, quietSwitch);
@@ -120,7 +132,9 @@ int main(int argc, char* argv[]) {
 		}
 
 		cout << "Terminating..." << endl;
+#if USE_WIRING
 		digitalWrite(LED_PIN, LOW);
+#endif
 	}
 	catch (AlsaError ex) {
 		cerr << "ALSA ERROR " << ex.message << " (" << ex.code << ") while calling: " << ex.what() << endl;

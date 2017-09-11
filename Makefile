@@ -1,13 +1,14 @@
 OUTPUT = DemoManMonitor
-CXX = g++-4.9
-CXX_FLAGS = -std=c++14 -Wall -Werror -O2
+CXX = g++
+CXX_FLAGS = -std=c++14 -Wall -Werror -Wno-unused-result -O2
 PROJECT_DIR = .
 TESTS_DIR = $(PROJECT_DIR)/tests
 GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
 MODELS_DIR = $(PROJECT_DIR)/models
 SOURCES = DemoManMonitor.cpp AlsaSource.cpp AlsaSink.cpp PocketSphinxKWS.cpp Adafruit_Thermal.cpp
 TEST_SOURCES = $(TESTS_DIR)/test_DemoManMonitor.cpp $(TESTS_DIR)/test_Adafruit_Thermal.cpp
-LIBS = -lwiringPi -lpocketsphinx -lsphinxbase -lsphinxad -lasound
+#LIBS = -lwiringPi -lpocketsphinx -lsphinxbase -lsphinxad -lasound
+LIBS = -lpocketsphinx -lsphinxbase -lsphinxad -lasound
 INCLUDES = -I/usr/local/include/sphinxbase -I/usr/local/include/pocketsphinx
 TEST_INCLUDES = -I$(PROJECT_DIR) -isystem $(GTEST_DIR)/include -I$(GTEST_DIR)
 

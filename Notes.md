@@ -6,6 +6,10 @@
 
     sudo apt-get install build-essential autoconf libtool automake bison swig python-dev libasound2-dev gcc-4.7 g++-4.7 libasound2-dev
 
+    sudo apt-get install build-essential autoconf libtool automake bison swig python-dev libasound2-dev libasound2-dev
+
+    sudo apt-get install pocketsphinx
+
 
 ### PocketSphinx & SphinxBase
 

@@ -5,3 +5,4 @@
 #define TRACE_OVERFLOW 0
 #define TRACE_TIMINGS 0
 #define USE_PRINTER 0
+#define USE_WIRING 0
