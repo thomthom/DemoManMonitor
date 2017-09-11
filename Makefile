@@ -1,6 +1,6 @@
 OUTPUT = DemoManMonitor
-CXX = g++-4.7
-CXX_FLAGS = -std=c++11 -Wall -Werror
+CXX = g++-4.9
+CXX_FLAGS = -std=c++14 -Wall -Werror -O2
 PROJECT_DIR = .
 TESTS_DIR = $(PROJECT_DIR)/tests
 GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0

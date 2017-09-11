@@ -4,12 +4,20 @@
 
 #include "AlsaSource.h"
 
+#include <chrono>
+#include <iostream>
+
+#include "AppConfig.h"
+
 using namespace std;
 
 AlsaSource::AlsaSource():
 	_device(nullptr),
-	_formatSize(0)
-{}
+	_formatSize(0),
+	_record_calls(0)
+{
+	_last_record = std::chrono::steady_clock::now();
+}
 
 AlsaSource::~AlsaSource() {
 	// Close the device if it's open.
@@ -28,14 +36,24 @@ void AlsaSource::open(const string& hw, const int rate, const int channels, cons
 }
 
 bool AlsaSource::record(std::vector<uint8_t>& buffer) {
+	++_record_calls;
+#if TRACE_TIMINGS
+	auto now = std::chrono::steady_clock::now();
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(now - _last_record).count() <<std::endl;
+#endif
 	// Fill buffer with captured audio.
-	size_t size = buffer.size() / _formatSize;
-	size_t captured = snd_pcm_readi(_device, buffer.data(), size);
+	snd_pcm_sframes_t size = buffer.size() / _formatSize;
+	snd_pcm_sframes_t captured = snd_pcm_readi(_device, buffer.data(), size);
 	if (captured != size) {
+#if TRACE_OVERFLOW
+		std::cout << "[" << _record_calls << "]" << "Buffer: " << buffer.size() << ", Frames requested: " << size << ", Captured: " << captured << std::endl;
+		std::cout << "  EBADFD: " << EBADFD << ", EPIPE: " << EPIPE << ", ESTRPIPE: " << ESTRPIPE << std::endl;
+#endif
 		// Audio buffer underrun, try to recover device and warn that audio wasn't captured.
 		ALSA_THROW(snd_pcm_recover(_device, captured, 1));
 		return false;
 	}
+	_last_record = std::chrono::steady_clock::now();
 	return true;
 }
 

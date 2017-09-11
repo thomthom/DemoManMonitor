@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <stdexcept>
 
 #include <alsa/asoundlib.h>
@@ -24,6 +25,8 @@ public:
 
 private:
 	snd_pcm_t* _device;
-	size_t _formatSize;
+	ssize_t _formatSize;
+	size_t _record_calls;
+	std::chrono::steady_clock::time_point _last_record;
 
 };

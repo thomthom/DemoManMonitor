@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <vector>
 
 #include <wiringPi.h>
@@ -19,14 +20,15 @@
 #include "AlsaError.h"
 #include "AlsaSink.h"
 #include "AlsaSource.h"
+#include "AppConfig.h"
 #include "DemoManMonitor.h"
 #include "PocketSphinxKWS.h"
 
 using namespace std;
 
 #define ALARM_FILE		"alarm_movie_padded.raw"
-//#define RECORD_HW		"plughw:0,0"
-//#define PLAYBACK_HW		"plughw:1,0"
+//#define RECORD_HW	      "plughw:0,0"
+//#define PLAYBACK_HW     "plughw:1,0"
 #define RECORD_HW		"plughw:1,0"
 #define PLAYBACK_HW		"plughw:0,1"
 #define KEYWORD_FILE	"keywords.txt"
@@ -67,9 +69,15 @@ int main(int argc, char* argv[]) {
 		digitalWrite(LED_PIN, LOW);
 
 		// Initialize printer.
+#if USE_PRINTER
 		cout << "Initialize printer." << endl;
-		Adafruit_Thermal printer(PRINTER_PORT);
-		printer.begin();
+		//Adafruit_Thermal printer(PRINTER_PORT);
+		//printer.begin();
+		auto printer = std::make_unique<Adafruit_Thermal>(PRINTER_PORT);
+		printer->begin();
+#else
+		std::unique_ptr<Adafruit_Thermal> printer{};
+#endif
 
 		// Load alarm raw audio.
 		cout << "Load alarm raw audio." << endl;
@@ -94,7 +102,8 @@ int main(int argc, char* argv[]) {
 
 		// Initialize main logic.
 		cout << "Initialize main logic." << endl;
-		DemoManMonitor monitor(8000, &printer, &source, &sink, &spotter, &alarm, light);
+		//DemoManMonitor monitor(8000, &printer, &source, &sink, &spotter, &alarm, light);
+		DemoManMonitor monitor(RECORD_BUFFER_SIZE, printer.get(), &source, &sink, &spotter, &alarm, light);
 		setQuietMode(monitor, quietSwitch);
 
 		cout << "Listening... (press Ctrl-C to stop)" << endl;

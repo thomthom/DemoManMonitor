@@ -40,7 +40,9 @@ void DemoManMonitor::update() {
 		if (keyword != "") {
 			// Keyword was spotted, sound alarm.
 			cout << "KEYWORD SPOTTED: " << keyword << endl;
+#if PLAY_ALARM
 			raiseAlarm(keyword);
+#endif
 		}
 	}
 	else {
@@ -102,13 +104,13 @@ void DemoManMonitor::raiseAlarm(const std::string& keyword) {
 	// Since the Pi only has one core and timing is somewhat
 	// critical (for smooth audio playback), a tight loop to
 	// update audio and ticket printing state will be executed.
-	size_t step = 0;
+	size_t step = _printer ? 0 : _ticketSteps.size();
 	_audioSink->resume();
 	_audioSink->playAsync(*_alarm);
 	bool playing = true;
 	while (playing || step < _ticketSteps.size()) {
 		// Check if the printer is ready for a new command.
-		if (step < _ticketSteps.size() && _printer->ready()) {
+		if (_printer && step < _ticketSteps.size() && _printer->ready()) {
 			// Execute the current step and increment to the next one.
 			_ticketSteps[step](_printer);
 			step++;
