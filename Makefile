@@ -1,6 +1,6 @@
 OUTPUT = DemoManMonitor
 CXX = g++
-CXX_FLAGS = -std=c++14 -Wall -Werror -Wno-unused-result -O2
+CXX_FLAGS = -std=c++14 -Wall -Werror -Wno-unused-result
 PROJECT_DIR = .
 TESTS_DIR = $(PROJECT_DIR)/tests
 GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
@@ -14,10 +14,10 @@ TEST_INCLUDES = -I$(PROJECT_DIR) -isystem $(GTEST_DIR)/include -I$(GTEST_DIR)
 
 
 DemoManMonitor: $(SOURCES) main.cpp
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(SOURCES) main.cpp -o $(OUTPUT) $(LIBS)
+	$(CXX) $(CXX_FLAGS) -O2 $(INCLUDES) $(SOURCES) main.cpp -o $(OUTPUT) $(LIBS)
 
 debug: $(SOURCES) main.cpp
-	$(CXX) -g $(CXX_FLAGS) $(INCLUDES) $(SOURCES) main.cpp -o $(OUTPUT) $(LIBS)
+	$(CXX) -ggdb $(CXX_FLAGS) -O0 $(INCLUDES) $(SOURCES) main.cpp -o $(OUTPUT) $(LIBS)
 
 run: DemoManMonitor
 	./DemoManMonitor -hmm ./models/en-us/ -dict ./models/cmudict-en-us.dict -lm ./models/en-us.lm.bin
