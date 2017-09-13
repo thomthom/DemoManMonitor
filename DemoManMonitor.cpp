@@ -7,6 +7,8 @@
 #include <iostream>
 #include <unistd.h>
 
+#include "AppConfig.h"
+
 using namespace std;
 
 DemoManMonitor::DemoManMonitor(size_t bufferSize,
