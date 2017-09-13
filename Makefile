@@ -1,5 +1,5 @@
 OUTPUT = DemoManMonitor
-CXX = g++-4.9
+CXX = g++
 CXX_FLAGS = -std=c++14 -Wall -Werror -O2
 PROJECT_DIR = .
 TESTS_DIR = $(PROJECT_DIR)/tests
