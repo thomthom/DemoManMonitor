@@ -5,6 +5,8 @@
 ### apt-get
 
     sudo apt-get install build-essential autoconf libtool automake bison swig python-dev libasound2-dev gcc-4.7 g++-4.7 libasound2-dev
+    
+    sudo apt-get install build-essential autoconf libtool automake bison swig python-dev libasound2-dev libasound2-dev
 
 
 ### PocketSphinx & SphinxBase
@@ -105,7 +107,7 @@ to use a specific interface via the sound mixer controls.  amixer allows
 command-line control of the mixer for the ALSA driver.
 
 You can force the RPi to use a specific interface using the command
-`amixer cset numid=3` N where the N parameter means the following:
+`amixer cset numid=3 N` where the N parameter means the following:
 0=auto,
 1=analog,
 2=hdmi.
