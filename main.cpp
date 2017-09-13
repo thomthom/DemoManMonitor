@@ -136,11 +136,11 @@ int main(int argc, char* argv[]) {
 		digitalWrite(LED_PIN, LOW);
 #endif
 	}
-	catch (AlsaError ex) {
+	catch (const AlsaError& ex) {
 		cerr << "ALSA ERROR " << ex.message << " (" << ex.code << ") while calling: " << ex.what() << endl;
 		return 1;
 	}
-	catch (exception ex) {
+	catch (const exception& ex) {
 		cerr << "ERROR: " << ex.what() << endl;
 		return 1;
 	}
