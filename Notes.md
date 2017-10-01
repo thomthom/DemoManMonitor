@@ -155,3 +155,11 @@ not compatible with input devices having more than 2 channels?
 > Failed to get a full buffer of microphone data!
 
 Getting this a lot. Haven't been able to figure out why or how to combat.
+
+## Raspberry Pi Config
+
+https://learn.adafruit.com/pi-thermal-printer/raspberry-pi-os-setup
+
+Under “Interfacing Options,” select “Serial.” Turn OFF the login shell over
+serial, and ENABLE the hardware serial port. NO and YES, respectively.
+This is vital!
